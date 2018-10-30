@@ -1,30 +1,43 @@
 package com.example.truefalsequiz;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Quiz {
     private List<Question> questions;
+    private List<Integer> asked;
     private int score;
     private int currentQ;
 
     public Quiz (List<Question> questions) {
         this.questions = questions;
+        asked = new ArrayList<Integer>();
         score = 0;
         currentQ = 0;
     }
 
     public boolean isAnotherQ() {
-        return currentQ < questions.size();
+        return asked.size() < 10;
     }
 
     public Question nextQuestion() {
-        currentQ++;
-        return questions.get(currentQ - 1);
+        //currentQ++;
+
+        currentQ = (int)(questions.size() * Math.random());
+
+        if (asked.indexOf(currentQ) >= 0) {
+            nextQuestion();
+        }
+        else {
+            asked.add(currentQ);
+        }
+
+
+        return questions.get(currentQ);
     }
 
-    // TODO: checkAnswer method
     public void checkAnswer(boolean response) {
-        if (questions.get(currentQ - 1).getAnswer() == response) {
+        if (questions.get(currentQ).getAnswer() == response) {
             score++;
         }
         else {
